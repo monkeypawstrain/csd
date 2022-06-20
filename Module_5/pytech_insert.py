@@ -7,7 +7,8 @@ students = client.pytech.get_collection("students")
 students.delete_many({})
 def insert_one(student): 
     return students.insert_one(student).inserted_id
-print ("-- INSERT STATEMENTS --")
+    
+print ("-- Insert Statement --")
 bill = {"student_id": 1007,
     "first_name": "Bill",
     "last_name": "Jackson"}

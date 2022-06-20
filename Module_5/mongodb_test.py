@@ -1,14 +1,17 @@
-from pymongo import MongoClient
 import certifi
+from pymongo import MongoClient
 
 url = "mongodb+srv://admin:admin@cluster0.nwh5cip.mongodb.net/retryWrites=true&w=majority",
-client = MongoClient(url,tlsCAFile=ca)
-
 ca = certifi.where()
-students = client.pytech.get_collection("students")
-student = {"_id":1003,
-"first_name": "Rufino"}
-new_student_id = students.insert_one(student).inserted_id
-print(new_student_id)
+client = MongoClient(url,tlsCAFile=ca)
 db = client.pytech
+print("--Pytech Collection List")
+print(db.list_collection_names())
+input("\n\n Endof the program,press any key to exit.. ")
+#students = client.pytech.get_collection("students")
+#student = {"_id":1003,
+#"first_name": "Rufino"}
+#new_student_id = students.insert_one(student).inserted_id
+#print(new_student_id)
+
 #print(db.list_collection_names())W

@@ -1,3 +1,8 @@
+'''Rufino Tzunun
+Module 5
+
+
+'''
 import certifi
 from pymongo import MongoClient
 url = "mongodb+srv://admin:admin@cluster0.ptdopkt.mongodb.net/pytech?retryWrites=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE"
@@ -7,7 +12,6 @@ students = client.pytech.get_collection("students")
 students.delete_many({})
 def insert_one(student): 
     return students.insert_one(student).inserted_id
-    
 print ("-- Insert Statement --")
 bill = {"student_id": 1007,
     "first_name": "Bill",

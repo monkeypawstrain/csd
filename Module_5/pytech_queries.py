@@ -1,8 +1,14 @@
+'''Rufino Tzunun
+Module 5
+
+
+'''
 import certifi
 from pymongo import MongoClient
 url = "mongodb+srv://admin:admin@cluster0.ptdopkt.mongodb.net/pytech?retryWrites=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE"
 ca = certifi.where()
 client = MongoClient(url,tlsCAFile=ca)
+
 students = client.pytech.get_collection("students")
 
 print ("-- Displaying  Students Documents From find() QUERY --")

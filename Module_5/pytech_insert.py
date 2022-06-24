@@ -13,21 +13,21 @@ students.delete_many({})
 def insert_one(student): 
     return students.insert_one(student).inserted_id
 print ("-- Insert Statement --")
-bill = {"student_id": 1007,
-    "first_name": "Bill",
-    "last_name": "Jackson"}
-bill_student_id = insert_one(bill)
-print("Inserted student record {} {} into the students collection with document_id {}".format(bill["first_name"], bill["last_name"], bill_student_id))
+Antonio = {"student_id": 1007,
+    "first_name": "Antonio",
+    "last_name": "Bov"}
+Antonio_student_id = insert_one(Antonio)
+print("Inserted student record {} {} into the students collection with document_id {}".format(Antonio["first_name"], Antonio["last_name"], Antonio_student_id))
 
 ella = {"student_id": 1008,
     "first_name": "Ella",
-    "last_name": "Jackson"}
+    "last_name": "Mac"}
 ella_student_id = insert_one(ella)
 print("Inserted student record {} {} into the students collection with document_id {}".format(ella["first_name"], ella["last_name"], ella_student_id))
 
-kim = {"student_id": 1009,
-    "first_name": "Kim",
-    "last_name": "Jackson"}
-kim_student_id = insert_one(kim)
-print("Inserted student record {} {} into the students collection with document_id {}".format(kim["first_name"], kim["last_name"], kim_student_id))
+Dom = {"student_id": 1009,
+    "first_name": "Dom",
+    "last_name": "Lom"}
+Dom_student_id = insert_one(Dom)
+print("Inserted student record {} {} into the students collection with document_id {}".format(Dom["first_name"], Dom["last_name"], Dom_student_id))
 input("\n\n  End of program, press any key to exit... ")

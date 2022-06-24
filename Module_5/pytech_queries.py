@@ -9,14 +9,19 @@ url = "mongodb+srv://admin:admin@cluster0.ptdopkt.mongodb.net/pytech?retryWrites
 ca = certifi.where()
 client = MongoClient(url,tlsCAFile=ca)
 
-students = client.pytech.get_collection("students")
+db = client.pytech
+students = db.students
 
-print ("-- Displaying  Students Documents From find() QUERY --")
-docs = students.find({})
-for doc in docs:
-    print("\nStudent ID: ", doc["student_id"], "\nFirst Name: ", doc["first_name"], "\nLast Name: ", doc["last_name"])
-print()
-print ("-- Displaying  Students Documents From find_one() QUERY --") 
-doc = students.find_one({"student_id": 1008})
-print("\nStudent ID: ", doc["student_id"], "\nFirst Name: ", doc["first_name"], "\nLast Name: ", doc["last_name"])
-input("\n\n  End of program, press any key to exit... ")    
+student_list = students.find({})
+
+print('\n  -- Displaying Students Documents From find() QUERY --')
+
+for doc in student_list:
+    print(f'Student ID: {doc["student_id"]}\nFirst Name: {doc["first_name"]}\nLast Name: {doc["last_name"]}\n')
+
+brand = students.find_one({"student_id": "1008"})
+
+print('\n-- Displaying Student Document From find_one() QUERY --')
+print(f'Student ID: {brand["student_id"]}\nFirst Name: {brand["first_name"]}\nLast Name: {brand["last_name"]}')
+
+input('\n\nEnd of program, press any key to continue... ')

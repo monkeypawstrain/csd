@@ -9,25 +9,38 @@ url = "mongodb+srv://admin:admin@cluster0.ptdopkt.mongodb.net/pytech?retryWrites
 ca = certifi.where()
 client = MongoClient(url,tlsCAFile=ca)
 students = client.pytech.get_collection("students")
-students.delete_many({})
-def insert_one(student): 
-    return students.insert_one(student).inserted_id
-print ("-- Insert Statement --")
-Antonio = {"student_id": 1007,
-    "first_name": "Antonio",
-    "last_name": "Bov"}
-Antonio_student_id = insert_one(Antonio)
-print("Inserted student record {} {} into the students collection with document_id {}".format(Antonio["first_name"], Antonio["last_name"], Antonio_student_id))
+db = client.pytech
 
-ella = {"student_id": 1008,
-    "first_name": "Ella",
-    "last_name": "Mac"}
-ella_student_id = insert_one(ella)
-print("Inserted student record {} {} into the students collection with document_id {}".format(ella["first_name"], ella["last_name"], ella_student_id))
+rufino = {
+    "student_id": "1007",
+    "first_name": "Rufino",
+    "last_name": "tz",
 
-Dom = {"student_id": 1009,
+}
+
+brand = {
+    "student_id": "1008",
+    "first_name": "Brand",
+    "last_name": "Tr",
+}
+
+dom = {
+    "student_id": "1009",
     "first_name": "Dom",
-    "last_name": "Lom"}
-Dom_student_id = insert_one(Dom)
-print("Inserted student record {} {} into the students collection with document_id {}".format(Dom["first_name"], Dom["last_name"], Dom_student_id))
-input("\n\n  End of program, press any key to exit... ")
+    "last_name": "Bar",
+}
+
+
+students = db.students
+
+print("\n -- INSERT STATEMENTS --")
+rufino_student_id = students.insert_one(rufino).inserted_id
+print(f"  Inserted student record Rufino Tz into students collection with document_id {str(rufino_student_id)}")
+
+brand_student_id = students.insert_one(brand).inserted_id
+print(f"  Inserted student record Brand Tr into students collection with document_id {str(brand_student_id)}")
+
+dom_student_id = students.insert_one(dom).inserted_id
+print(f"  Inserted student record Dom Bar into students collection with document_id {str(dom_student_id)}")
+
+input('\n\n  End of program, press any key to exit... ')

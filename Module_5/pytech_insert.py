@@ -3,16 +3,13 @@ Module 5
 
 
 '''
-import certifi
 from pymongo import MongoClient
 url = "mongodb+srv://admin:admin@cluster0.nwh5cip.mongodb.net/retryWrites=true&w=majority",
-
-
-ca = certifi.where()
-client = MongoClient(url,tlsCAFile=ca)
-students = client.pytech.get_collection("students")
+client = MongoClient(url)
 db = client.pytech
+students = db.students
 
+students = client.pytech.get_collection("students")
 rufino = {
     "student_id": "1007",
     "first_name": "Rufino",

@@ -10,43 +10,35 @@ collection = db.students
 docs = collection.find({})
 
 print  ("\n -- Displaying Student Documents Find() Query -- ")
-
-##for doc in docs :
-    ##print (doc)
-
-print ("-- Displaying Student Documents From find() Query-- ")
-
+docs = collection.find({})
 for doc in docs:
  for key, value in doc.items():
     print ('{0}: {1}'.format(key, value))
 
+
 print ("-- Displaying Updated Student Document From find_one () Query-- ")
+geo = {
+    "student_id": "1010",
+    "first_name": "Geo",
+    "last_name": "Dur",
+}
 
-doc = collection.find_one ({"student_id": "1007"})
-print ("  Student ID: " + doc["student_id"] + "\n  First Name: " + doc["first_name"] + "\n  Last Name: " + doc["last_name"] + "\n")
+print ("--Display New Student List Doc-- ")
+geo_student_id = collection.insert_one(geo).inserted_id
+print("Inserted student record Geo Dur into student collections with document_id " )
+print (geo_student_id)
+print("Displaying Student new list")
+print(geo)
+docs = collection.find({})
+for doc in docs:
+ for key, value in doc.items():
+    print ('{0}: {1}'.format(key, value))
 
+print("Deleted student 1010")
+delete = {"student_id": "1010"}
+deleted =  collection.delete_one(delete)
+docs = collection.find({})
 
-
-
-
-
-
-
-
-
-
-
-###db.collection.find ({"student_id": "1007"})
-
-'''doc = collection.find_one ({"student_id": "1007"})
-print (doc)
-rufino = {
-    "student_id": "1007",
-    "first_name": "Rufino",
-    "last_name": "tz",}'''
-
-'''rufino_student_id = collection.insert_one(rufino).inserted_id
-print ("  Student ID: " + doc["student_id"] + "\n  First Name: " + doc["first_name"] + "\n  Last Name: " + doc["last_name"] + "\n")
-print (rufino_student_id)
-
-##delete = {""}'''
+for doc in docs:
+ for key, value in doc.items():
+    print ('{0}: {1}'.format(key, value))

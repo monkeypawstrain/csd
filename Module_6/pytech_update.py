@@ -27,7 +27,7 @@ print ("  Student ID: " + doc["student_id"] + "\n  First Name: " + doc["first_na
 
 print("Displaying student documents 1007 from update_one() Query")
 
-doc =  collection.update_one({"student_id": "1007"}, {"$set": {"last_name": "Vox"}})
+doc =  collection.update_one({"student_id": "1007"}, {"$set": {"last_name": "vox"}})
 doc = collection.find_one({"student_id": "1007"})
 print ("  Student ID: " + doc["student_id"] + "\n  First Name: " + doc["first_name"] + "\n  Last Name: " + doc["last_name"] + "\n")
 

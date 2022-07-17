@@ -1,118 +1,120 @@
-'''Rudino Tzunun
-Module 9.3
-7/7/22
-'''
+# Team Delta
+# Rufino Tzunun
+# Christopher Clausen
+# Moises Herrera
+# Module 11 Milestone #2 Wilson Financial
+
 
 import mysql.connector
-from mysql.connector import errorcode
 
 config = {
-    "user": "willson_finacial_user",
+    "user": "root",
     "password": "Pollo1994@",
     "host": "127.0.0.1",
     "database": "willson_finacial",
-    "raise_on_warnings": True
+    "raise_on_warnings": False
     }
 
+
+# Create Employee Table
 db = mysql.connector.connect(**config)
 cursor = db.cursor()
-DB_NAME = 'willson_finacial'
-def create_database(cursor):
-    try:
-        cursor.execute(
-            "CREATE DATABASE {}".format(DB_NAME))
-    except mysql.connector.Error as err:
-        print("Failed creating database: {}".format(err))
-        exit(1)
-try:
-    cursor.execute("USE {}".format(DB_NAME))
-except mysql.connector.Error as err:
-    print("Database {} does not exists.".format(DB_NAME))
-    if err.errno == errorcode.ER_BAD_DB_ERROR:
-        create_database(cursor)
-        print("Database {} created successfully.".format(DB_NAME))
-        db.database = DB_NAME
-    else:
-        print(err)
-        exit(1)
+cursor.execute("SET FOREIGN_KEY_CHECKS=0")
+cursor.execute("DROP TABLE IF EXISTS Employee")
+cursor.execute("CREATE TABLE Employee (emp_id INT NOT NULL AUTO_INCREMENT, emp_name VARCHAR(100) NOT NULL, emp_pos VARCHAR(100) NOT NULL, PRIMARY KEY(emp_id))")
 
-TABLES = {}
-TABLES['customer'] = (
-    "CREATE TABLE `customer` ("
-    "  `customer_id`          int             NOT NULL    AUTO_INCREMENT,"
-    "  `customer_lname`       varchar(75)     NOT NULL,"
-    "  `customer_fname`       varchar(75)     NOT NULL,"
-    "  `start_date`           varchar(75)     NOT NULL,"
-    "  PRIMARY KEY (`customer_id`)"
-    ") ENGINE=InnoDB")
+#Create Client Table
+cursor.execute("DROP TABLE IF EXISTS Client")
+cursor.execute("CREATE TABLE Client (cl_id INT NOT NULL AUTO_INCREMENT, cl_name VARCHAR(100) NOT NULL, cl_address VARCHAR(200) NOT NULL, cl_phone VARCHAR(50) NOT NULL, cl_email VARCHAR(100) NOT NULL, cl_date_added DATETIME NOT NULL, emp_id INT NOT NULL, PRIMARY KEY(cl_id), CONSTRAINT fk_employee FOREIGN KEY(emp_id) REFERENCES employee(emp_id))")
 
-TABLES['account'] = (
-    "CREATE TABLE `account` ("
-    "  `account_id`                 int             NOT NULL    AUTO_INCREMENT,"
-    "  `account_number`             int             NOT NULL,"
-    "  `sec_id`                     int             NOT NULL,"
-    "  `account_name`               varchar(75)     NOT NULL,"
-    "  `report_id`                  int     NOT NULL,"
+#Create Stock Table
+cursor.execute("DROP TABLE IF EXISTS Stock")
+cursor.execute("CREATE TABLE Stock (stock_id INT NOT NULL AUTO_INCREMENT, stock_symbol VARCHAR(100) NOT NULL, stock_current_price DECIMAL(10,2) NOT NULL, PRIMARY KEY(stock_id))")
+cursor.execute("SET FOREIGN_KEY_CHECKS=1")
 
-    "  PRIMARY KEY (`account_id`)"
-    ") ENGINE=InnoDB")
+#Create Transaction Table
+cursor.execute("DROP TABLE IF EXISTS Transaction")
+cursor.execute("CREATE TABLE Transaction (order_id INT NOT NULL AUTO_INCREMENT, cl_id INT NOT NULL, stock_id INT NOT NULL, order_date DATETIME NOT NULL, order_shares_traded INT NOT NULL, order_unit_price DECIMAL(10,2) NOT NULL, PRIMARY KEY(order_id), CONSTRAINT fk_client FOREIGN KEY(cl_id) REFERENCES client(cl_id), CONSTRAINT fk_stock FOREIGN KEY(stock_id) REFERENCES stock(stock_id))")
 
-TABLES['transaction'] = (
-    "CREATE TABLE `transaction` ("
-    "  `transaction_id`                       int           NOT NULL    AUTO_INCREMENT,"
-    "  `account_id`                           int           NOT NULL,"
-    "  `sec_id`                               int           NOT NULL,"
-    "  `transaction_date`                     int   NOT NULL,"
-    "  `amount`                               int   NOT NULL,"
-    "  `status`                     varchar(75)   NOT NULL,"
-    "  PRIMARY KEY (`transaction_id`)"
-    ") ENGINE=InnoDB")
+# Insert Employees
+cursor.execute("INSERT INTO Employee (emp_name, emp_pos) VALUES ('John Smith','Sr. Financial Advisor')")
+cursor.execute("INSERT INTO Employee (emp_name, emp_pos) VALUES ('Jack Cats','Lawyer')")
+cursor.execute("INSERT INTO Employee (emp_name, emp_pos) VALUES ('Rick Scott','Broker')")
+cursor.execute("INSERT INTO Employee (emp_name, emp_pos) VALUES ('Matt Damon','Chief Advisor')")
+cursor.execute("INSERT INTO Employee (emp_name, emp_pos) VALUES ('Mike Jones','Judge')")
+cursor.execute("INSERT INTO Employee (emp_name, emp_pos) VALUES ('Miguel Sanchez','Human Resources')")
+
+# Insert Clients
+cursor.execute("INSERT INTO Client (cl_name, cl_address, cl_phone, cl_email, cl_date_added, emp_id) VALUES ('Robert Jones','291 South Street, Orlando, FL', '407-555-0123', 'rob.jones@gmail.com', NOW(), 1)")
+cursor.execute("INSERT INTO Client (cl_name, cl_address, cl_phone, cl_email, cl_date_added, emp_id) VALUES ('Nick Jonas','2 North Street, Davenport, FL', '407-555-5555', 'nick.jonas@gmail.com', NOW(), 1)")
+cursor.execute("INSERT INTO Client (cl_name, cl_address, cl_phone, cl_email, cl_date_added, emp_id) VALUES ('Sam Hikes','13 West Street, Miami, FL', '407-555-9999', 'samhikey@gmail.com', NOW(), 1)")
+cursor.execute("INSERT INTO Client (cl_name, cl_address, cl_phone, cl_email, cl_date_added, emp_id) VALUES ('Dan Williams','101 Cool Street, Tampa, FL', '407-555-3999', 'verycool@gmail.com', NOW(), 1)")
+cursor.execute("INSERT INTO Client (cl_name, cl_address, cl_phone, cl_email, cl_date_added, emp_id) VALUES ('Iam Sam','100 NS Street, Jacksonville, FL', '407-555-1111', 'samiam@gmail.com', NOW(), 1)")
+cursor.execute("INSERT INTO Client (cl_name, cl_address, cl_phone, cl_email, cl_date_added, emp_id) VALUES ('Juan Jose','12 NW, Kissimmee, FL', '239-555-0123', 'jimbo@gmail.com', NOW(), 1)")
 
 
-TABLES['sec'] = (
-    "  CREATE TABLE `sec` ("
-    "  `sec_id`                 int             NOT NULL    AUTO_INCREMENT,"
-    "  `transaction_date`       int   NOT NULL,"
-    "  PRIMARY KEY (`sec_id`)"
-    ") ENGINE=InnoDB")
+# Insert Stocks
+cursor.execute("INSERT INTO Stock (stock_symbol, stock_current_price) VALUES ('DIS',95.86)")
+cursor.execute("INSERT INTO Stock (stock_symbol, stock_current_price) VALUES ('DOW',45)")
+cursor.execute("INSERT INTO Stock (stock_symbol, stock_current_price) VALUES ('NASDAQ',13.96)")
+cursor.execute("INSERT INTO Stock (stock_symbol, stock_current_price) VALUES ('S&P 500',3.24)")
+cursor.execute("INSERT INTO Stock (stock_symbol, stock_current_price) VALUES ('WMT',125.40)")
+cursor.execute("INSERT INTO Stock (stock_symbol, stock_current_price) VALUES ('AMD',79.35)")
 
+# Insert Transactions
+cursor.execute("INSERT INTO Transaction (cl_id, stock_id, order_date, order_shares_traded, order_unit_price) VALUES (1,1,'2022-07-01 12:00:00', 50, 92.70)")
+cursor.execute("INSERT INTO Transaction (cl_id, stock_id, order_date, order_shares_traded, order_unit_price) VALUES (2,2,'2022-02-03 12:00:00', 40, 85.67)")
+cursor.execute("INSERT INTO Transaction (cl_id, stock_id, order_date, order_shares_traded, order_unit_price) VALUES (3,3,'2022-07-01 12:00:00', 34, 23.02)")
+cursor.execute("INSERT INTO Transaction (cl_id, stock_id, order_date, order_shares_traded, order_unit_price) VALUES (4,4,'2022-07-01 12:00:00', 63, 34.92)")
+cursor.execute("INSERT INTO Transaction (cl_id, stock_id, order_date, order_shares_traded, order_unit_price) VALUES (5,5,'2022-07-01 12:00:00', 40, 85.39)")
+cursor.execute("INSERT INTO Transaction (cl_id, stock_id, order_date, order_shares_traded, order_unit_price) VALUES (6,6,'2022-07-08 15:59:00', -50, 95.86)")
 
-for table_name in TABLES:
-    table_description = TABLES[table_name]
-    try:
-        print("Create table {}: ".format(table_name), end='')
-        cursor.execute(table_description)
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
-            print("already exists.")
-        else:
-            print(err.msg)
-    else:
-        print("OK")
-# Insert 6 records
-add_customer = """INSERT INTO customer (customer_fname, customer_lname, start_date)
-               VALUES (%s, %s, %s)"""
-    
-
-customer_data = [('Rudino', 'Tzu', '04/04/2022'),
-            ('Andrew', 'To', '04/05/2022'),
-            ('Dom', 'Tu', '04/09/2022'),
-            ('Mary', 'Ann', '05/04/2022'),
-            ('Marc', 'Dos', '04/04/2022'),
-            ('Ale', 'Ma', '06/04/2022')]
-cursor.executemany(add_customer, customer_data)
-
-customer_id = cursor.lastrowid
-
-print('\n  --Custumer List:---  \n')
-for customer in customer_data:
-    print("\nFirst Name: {}\n Last Name: {} \n Start Date:  {}\n".format(customer[0], customer[1], customer[2],))  
-
-query = "SELECT customer_fname,customer_lname,start_date FROM customer"
-cursor.execute(query)
-assetss=cursor.fetchall()
 db.commit()
 
+# Select Records
 
-cursor.close()
-db.close()
+cursor.execute("SELECT emp_id, emp_name, emp_pos FROM employee")
+employees = cursor.fetchall()
+print()
+print("-- DISPLAYING EMPLOYEE RECORDS --")
+
+for employee in employees:
+	print("Employee ID: {}".format(employee[0]))
+	print("Employee Name: {}".format(employee[1]))
+	print("Position: {}".format(employee[2]))
+	print()
+
+cursor.execute("SELECT cl_name, cl_address, cl_phone, cl_date_added FROM client")
+clients = cursor.fetchall()
+print()
+print("-- DISPLAYING EMPLOYEE CLIENT --")
+
+for client in clients:
+	print("Client Name: {}".format(client[0]))
+	print("Client Address: {}".format(client[1]))
+	print("Client Phone: {}".format(client[2]))
+	print("Client Date Added: {}".format(client[3]))
+	print()
+
+cursor.execute("SELECT stock_symbol, stock_current_price FROM stock")
+stocks = cursor.fetchall()
+print()
+print("-- DISPLAYING STOCKS --")
+
+for stock in stocks:
+	print("Stock Symbol: {}".format(stock[0]))
+	print("Stock current price: {}".format(stock[1]))
+	print()
+
+cursor.execute("SELECT cl_id, stock_id, order_date, order_shares_traded, order_unit_price FROM transaction ")
+transactions = cursor.fetchall()
+print()
+print("-- DISPLAYING TRANSACTION --")
+
+for transaction in transactions:
+	print("Client ID: {}".format(transaction[0]))
+	print("Stock ID: {}".format(transaction[1]))
+	print("Order Date: {}".format(transaction[2]))
+	print("Order shares traded: {}".format(transaction[3]))
+	print("Order unit price: {}".format(transaction[4]))
+	print()
